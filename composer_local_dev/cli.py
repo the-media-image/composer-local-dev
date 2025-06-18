@@ -234,6 +234,13 @@ option_location = click.option(
     type=click.Choice(constants.DatabaseEngine.choices(), case_sensitive=False),
     metavar="DATABASE_ENGINE",
 )
+@click.option(
+    "--plugins-path",
+    help="Path to plugins folder. If it does not exist, it will be created.",
+    show_default="'plugins' directory in the environment directory",
+    metavar="PATH",
+    type=click.Path(file_okay=False),
+)
 @required_environment
 @verbose_mode
 @debug_mode
@@ -249,6 +256,7 @@ def create(
     debug: bool,
     database_engine: str,
     dags_path: Optional[pathlib.Path] = None,
+    plugins_path: Optional[pathlib.Path] = None,
 ):
     """
     Create local Composer development environment.
@@ -303,6 +311,7 @@ def create(
             web_server_port=web_server_port,
             dags_path=dags_path,
             database_engine=database_engine,
+            plugins_path=plugins_path,
         )
     else:
         env = composer_environment.Environment(
@@ -313,6 +322,7 @@ def create(
             port=web_server_port,
             dags_path=dags_path,
             database_engine=database_engine,
+            plugins_path=plugins_path,
         )
     env.create()
 
